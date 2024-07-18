@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #2e2e2e;
+}
+
+select {
+  @apply rounded shadow-inner shadow-stone-400 px-2;
+}
