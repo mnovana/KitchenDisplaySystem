@@ -9,6 +9,7 @@ function Orders() {
   const [orders, setOrders] = useState([]);
   const { connection, setConnection } = useContext(ConnectionContext);
   const user = useContext(UserContext);
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   function AddOrder(newOrder) {
     if (user.username == "kitchen") {
@@ -29,7 +30,7 @@ function Orders() {
     const headers = {};
     headers.Authorization = "Bearer " + user.token;
 
-    fetch("https://localhost:7141/orders/unserved", { headers: headers })
+    fetch(`${serverUrl}/orders/unserved`, { headers: headers })
       .then((response) => {
         if (response.status == 200) {
           response.json().then(setOrders);
@@ -43,7 +44,7 @@ function Orders() {
   // signalR
   useEffect(() => {
     const connect = new HubConnectionBuilder()
-      .withUrl("https://localhost:7141/hubs/order", {
+      .withUrl(`${serverUrl}/hubs/order`, {
         accessTokenFactory: () => user.token,
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,

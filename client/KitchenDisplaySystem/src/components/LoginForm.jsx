@@ -17,8 +17,9 @@ function LoginForm({ setUser }) {
 
     const user = { username: waiter ? "waiter" : "kitchen", password: password };
     console.log(user);
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-    fetch("https://localhost:7141/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(user) })
+    fetch(`${serverUrl}/login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(user) })
       .then((response) => {
         if (response.status == 200) {
           response.json().then((data) => {

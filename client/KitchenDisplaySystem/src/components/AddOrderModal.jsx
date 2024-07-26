@@ -11,8 +11,9 @@ function AddOrderModal() {
     if (!sessionStorage.getItem("orderData")) {
       const headers = {};
       headers.Authorization = "Bearer " + user.token;
+      const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-      fetch("https://localhost:7141/orderdata", { headers: headers })
+      fetch(`${serverUrl}/orderdata`, { headers: headers })
         .then((response) => {
           if (response.status == 200) {
             response.json().then((data) => {
