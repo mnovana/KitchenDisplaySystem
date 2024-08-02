@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KitchenDisplaySystem.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -281,6 +281,7 @@ namespace KitchenDisplaySystem.Migrations
                 values: new object[,]
                 {
                     { "061d252f-f801-443d-9506-900d13f090fd", "2", "Waiter", "WAITER" },
+                    { "2b1ad17d-c6f5-4de9-b637-c91488504334", "3", "Admin", "ADMIN" },
                     { "a4cb9cf6-e1fe-4913-969d-f622cbd2bd84", "1", "Kitchen", "KITCHEN" }
                 });
 
@@ -289,8 +290,9 @@ namespace KitchenDisplaySystem.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "10335569-4b56-45f7-b029-c705d304bf52", 0, "19f580bb-5b1b-4bb2-88f0-1ef96a2609b9", null, false, false, null, null, "KITCHEN", "AQAAAAIAAYagAAAAEI38NQHNBtTfp7HEEySqGeec+xl1gSnroFBMGbBAlnIhEGBp/C/lv8L1xIc6z8x1wA==", null, false, "d09a84d0-638e-4856-aa74-dbba77a64ab7", false, "kitchen" },
-                    { "7df3d20c-7e1b-4581-8546-f03510dda802", 0, "6b295909-2c0b-41dc-891a-471b6921aa51", null, false, false, null, null, "WAITER", "AQAAAAIAAYagAAAAEDo5htmc4JKvVCjzzx4LicTWGyXPtj3tfKBrOayFL/NZqKjNKtU0eKjTu8jPJQnl9Q==", null, false, "807d732b-0a96-467c-981e-a5b65254faf4", false, "waiter" }
+                    { "10335569-4b56-45f7-b029-c705d304bf52", 0, "5baf56a7-7b3a-43e2-b236-79c667158df1", null, false, false, null, null, "KITCHEN", "AQAAAAIAAYagAAAAEA6NJCbabDmXafF/yvxn+XDBK/pyOKRAOoGPOyKYawDtJMYn7Mo5zdum147h01E4/A==", null, false, "09dcd11b-10b2-4f6b-94ea-6801d6d7186c", false, "kitchen" },
+                    { "5efd9e33-1d82-49ef-950d-6c34917f9a26", 0, "08ff95de-1868-4d3a-82a8-ffbba49ab025", null, false, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEIX1FIoNOvMhwHfaGd9XX7oykhPXqAzkZF/QEfuLCZQOQyRY+FXdiOHUh2G+XLdhnw==", null, false, "e509c224-170e-499d-a376-a01e7bbe9693", false, "admin" },
+                    { "7df3d20c-7e1b-4581-8546-f03510dda802", 0, "ada140a9-4534-417c-b437-2b96ed5967d9", null, false, false, null, null, "WAITER", "AQAAAAIAAYagAAAAEHIJBnAgd12ZbzSroQbyuC7dD5y/Lab/F8E7BYZfw9G/MxluCfIwrNNpW5a4sIb2iQ==", null, false, "bc54c744-98aa-423d-9bc5-e4850c32d166", false, "waiter" }
                 });
 
             migrationBuilder.InsertData(
@@ -333,6 +335,7 @@ namespace KitchenDisplaySystem.Migrations
                 values: new object[,]
                 {
                     { "a4cb9cf6-e1fe-4913-969d-f622cbd2bd84", "10335569-4b56-45f7-b029-c705d304bf52" },
+                    { "2b1ad17d-c6f5-4de9-b637-c91488504334", "5efd9e33-1d82-49ef-950d-6c34917f9a26" },
                     { "061d252f-f801-443d-9506-900d13f090fd", "7df3d20c-7e1b-4581-8546-f03510dda802" }
                 });
 
@@ -362,7 +365,7 @@ namespace KitchenDisplaySystem.Migrations
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "End", "Note", "Served", "Start", "TableId", "WaiterId" },
-                values: new object[] { 1, new DateTime(2024, 6, 24, 15, 59, 38, 461, DateTimeKind.Local).AddTicks(8710), "Salata bez ulja!", false, new DateTime(2024, 6, 24, 15, 45, 38, 461, DateTimeKind.Local).AddTicks(8632), 1, 1 });
+                values: new object[] { 1, new DateTime(2024, 6, 30, 15, 44, 0, 0, DateTimeKind.Unspecified), "Salata bez ulja!", false, new DateTime(2024, 6, 30, 15, 30, 0, 0, DateTimeKind.Unspecified), 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "OrderItems",
