@@ -17,7 +17,7 @@ function Stopwatch({ startSeconds, updateSeconds }) {
     if (seconds >= 1200) {
       updateSeconds(seconds);
     }
-  }, [seconds, updateSeconds]);
+  }, [seconds]);
 
   return (
     <>

@@ -35,7 +35,9 @@ function Order({ order }) {
 
   return (
     <div className="bg-gray-50 w-72 overflow-y-auto rounded">
-      <OrderHeader id={order.id} waiterDisplayName={order.waiterDisplayName} tableNumber={order.tableNumber} start={order.start} end={end} />
+      {/* without 'key={end}' OrderHeader wouldn't be re-renderd with the Order re-render */}
+      {/* new Order would use the previous OrderHeader */}
+      <OrderHeader key={end} id={order.id} waiterDisplayName={order.waiterDisplayName} tableNumber={order.tableNumber} start={order.start} end={end} />
 
       {order.orderItems.map((orderItem) => (
         <OrderItem key={orderItem.foodName} foodName={orderItem.foodName} quantity={orderItem.quantity} />

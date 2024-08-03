@@ -44,7 +44,7 @@ function CalculateSeconds(start, end) {
   const startTime = new Date(start);
   const endTime = end ? new Date(end) : new Date();
 
-  const seconds = Math.floor((endTime - startTime) / 1000);
+  const seconds = Math.round((endTime - startTime) / 1000);
 
   return seconds;
 }
