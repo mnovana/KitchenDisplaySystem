@@ -18,3 +18,11 @@ The Web API provides enpoints for authentication and getting the initial data wi
 - SQL Server
 - React
 - Tailwind CSS
+
+### Features in progress
+
+- Admin functionalities
+
+### Demo
+
+![Demo](demo.gif)
