@@ -117,7 +117,7 @@ namespace KitchenDisplaySystem.Context
             PasswordHasher<AppUser> passwordHasher = new PasswordHasher<AppUser>();
             kitchenUser.PasswordHash = passwordHasher.HashPassword(kitchenUser, "Kuhinja-0");
             waiterUser.PasswordHash = passwordHasher.HashPassword(waiterUser, "Konobar-0");
-            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Admin-0");
+            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Administrator-0");
 
             modelBuilder.Entity<AppUser>().HasData(kitchenUser, waiterUser, adminUser);
         }

@@ -91,13 +91,13 @@ namespace KitchenDisplaySystem.Migrations
                         {
                             Id = "10335569-4b56-45f7-b029-c705d304bf52",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5baf56a7-7b3a-43e2-b236-79c667158df1",
+                            ConcurrencyStamp = "e25c7f3a-8d5e-422c-924f-1ee45038c854",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "KITCHEN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA6NJCbabDmXafF/yvxn+XDBK/pyOKRAOoGPOyKYawDtJMYn7Mo5zdum147h01E4/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA2ch+ZzCzM23pxRqwygjQ/B401fFIPtqqvu20ak7bZGGIKWcWMsiN02GIf6Lre4BQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "09dcd11b-10b2-4f6b-94ea-6801d6d7186c",
+                            SecurityStamp = "a37760e8-5558-44b2-b88c-9b65294f9bf4",
                             TwoFactorEnabled = false,
                             UserName = "kitchen"
                         },
@@ -105,13 +105,13 @@ namespace KitchenDisplaySystem.Migrations
                         {
                             Id = "7df3d20c-7e1b-4581-8546-f03510dda802",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ada140a9-4534-417c-b437-2b96ed5967d9",
+                            ConcurrencyStamp = "79c2379b-1480-4f0b-ba1a-509dbe8dbaa6",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "WAITER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHIJBnAgd12ZbzSroQbyuC7dD5y/Lab/F8E7BYZfw9G/MxluCfIwrNNpW5a4sIb2iQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBYtsxCcZR4eJEF16rOgeV2u19/wXixTCP+U6tlgN+evvhyT7piUmr0S0AufGphZtA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bc54c744-98aa-423d-9bc5-e4850c32d166",
+                            SecurityStamp = "a14606b8-4fcf-4381-a4e2-d0842d2a0fb0",
                             TwoFactorEnabled = false,
                             UserName = "waiter"
                         },
@@ -119,13 +119,13 @@ namespace KitchenDisplaySystem.Migrations
                         {
                             Id = "5efd9e33-1d82-49ef-950d-6c34917f9a26",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "08ff95de-1868-4d3a-82a8-ffbba49ab025",
+                            ConcurrencyStamp = "cd4ba76d-f604-4cea-a929-27a0a0282e93",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIX1FIoNOvMhwHfaGd9XX7oykhPXqAzkZF/QEfuLCZQOQyRY+FXdiOHUh2G+XLdhnw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJhE+ArRv7gcx0Vm5NOJGL/UKHcnOtp4QTmAeqkgNOYvOjbn83bYqCfcBN4D0svn6A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e509c224-170e-499d-a376-a01e7bbe9693",
+                            SecurityStamp = "5cd1d6dd-ea35-41f9-9dba-c11a9c75bb63",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

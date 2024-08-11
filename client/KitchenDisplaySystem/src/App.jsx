@@ -1,36 +1,31 @@
-import Orders from "./components/Orders";
-import Sidebar from "./components/Sidebar";
-import LoginForm from "./components/LoginForm";
-import React, { useState } from "react";
-import AddOrderModal from "./components/AddOrderModal";
-
-export const UserContext = React.createContext();
-export const SetShowModalContext = React.createContext();
-export const ConnectionContext = React.createContext();
+import React from "react";
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import OrdersPage from "./pages/OrdersPage";
+import LoginPage from "./pages/LoginPage";
+import PanelPage from "./pages/PanelPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")) || null);
-  const [showModal, setShowModal] = useState(false);
-  // connection is set inside <Orders/> and used inside <Orders/> and <AddOrderModal/>.<AddOrderForm/>
-  const [connection, setConnection] = useState(null);
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route element={<ProtectedRoute usernames={["waiter", "kitchen"]} />}>
+          <Route index element={<OrdersPage />} />
+        </Route>
+        <Route element={<ProtectedRoute usernames={null} />}>
+          <Route path="/login" element={<LoginPage />} />
+        </Route>
+        <Route element={<ProtectedRoute usernames={["admin"]} />}>
+          <Route path="/admin" element={<PanelPage />} />
+        </Route>
 
-  return (
-    <div className="flex h-screen">
-      {sessionStorage.getItem("user") ? (
-        <UserContext.Provider value={user}>
-          <SetShowModalContext.Provider value={setShowModal}>
-            <ConnectionContext.Provider value={{ connection, setConnection }}>
-              <Sidebar setUser={setUser} />
-              <Orders />
-              {showModal && <AddOrderModal />}
-            </ConnectionContext.Provider>
-          </SetShowModalContext.Provider>
-        </UserContext.Provider>
-      ) : (
-        <LoginForm setUser={setUser} />
-      )}
-    </div>
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    )
   );
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

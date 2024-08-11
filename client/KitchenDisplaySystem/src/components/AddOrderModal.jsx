@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import AddOrderForm from "./AddOrderForm";
-import { UserContext } from "../App";
+import { UserContext } from "../pages/OrdersPage";
 
 function AddOrderModal() {
   const [orderData, setOrderData] = useState(null);

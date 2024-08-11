@@ -3,7 +3,7 @@ import React from "react";
 import Order from "./Order";
 import { HubConnectionBuilder, HttpTransportType } from "@microsoft/signalr";
 import bell_one from "../assets/bell_one.mp3";
-import { ConnectionContext, UserContext } from "../App";
+import { ConnectionContext, UserContext } from "../pages/OrdersPage";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
