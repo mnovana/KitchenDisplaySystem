@@ -73,10 +73,10 @@ namespace KitchenDisplaySystem.Context
             );
 
             modelBuilder.Entity<Waiter>().HasData(
-                new Waiter { Id = 1, Name = "Marko", Surname = "Marković", DisplayName = "Marko M.", Phone = "0618521114" },
-                new Waiter { Id = 2, Name = "Marko", Surname = "Jovanović", DisplayName = "Marko J.", Phone = "0612336852" },
-                new Waiter { Id = 3, Name = "Jovana", Surname = "Jovanović", DisplayName = "Jovana", Phone = "0632448752" },
-                new Waiter { Id = 4, Name = "Petar", Surname = "Petrović", DisplayName = "Petar", Phone = "0603352291" }
+                new Waiter { Id = 1, Name = "Marko", Surname = "Marković", DisplayName = "Marko M.", Phone = "0618521114", Active = true },
+                new Waiter { Id = 2, Name = "Marko", Surname = "Jovanović", DisplayName = "Marko J.", Phone = "0612336852", Active = true },
+                new Waiter { Id = 3, Name = "Jovana", Surname = "Jovanović", DisplayName = "Jovana", Phone = "0632448752", Active = true },
+                new Waiter { Id = 4, Name = "Petar", Surname = "Petrović", DisplayName = "Petar", Phone = "0603352291", Active = true }
             );
 
             modelBuilder.Entity<Order>().HasData(

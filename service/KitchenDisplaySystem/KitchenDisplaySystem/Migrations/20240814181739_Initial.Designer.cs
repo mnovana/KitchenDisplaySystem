@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KitchenDisplaySystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240811220030_Initial")]
+    [Migration("20240814181739_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -94,13 +94,13 @@ namespace KitchenDisplaySystem.Migrations
                         {
                             Id = "10335569-4b56-45f7-b029-c705d304bf52",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e25c7f3a-8d5e-422c-924f-1ee45038c854",
+                            ConcurrencyStamp = "0a2f485d-41be-4558-88fe-d4b7493b8fee",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "KITCHEN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA2ch+ZzCzM23pxRqwygjQ/B401fFIPtqqvu20ak7bZGGIKWcWMsiN02GIf6Lre4BQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHTpiGS34eoe0z7BlFNPoc36qwgyVfu7Len+4cGwMeyOeO20UlXAJwQf72QSoc8lQA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a37760e8-5558-44b2-b88c-9b65294f9bf4",
+                            SecurityStamp = "764f0190-87be-4731-b38c-92b53ee2272f",
                             TwoFactorEnabled = false,
                             UserName = "kitchen"
                         },
@@ -108,13 +108,13 @@ namespace KitchenDisplaySystem.Migrations
                         {
                             Id = "7df3d20c-7e1b-4581-8546-f03510dda802",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "79c2379b-1480-4f0b-ba1a-509dbe8dbaa6",
+                            ConcurrencyStamp = "5ce3e42d-98dd-415c-9a4d-9034d694f0d3",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "WAITER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBYtsxCcZR4eJEF16rOgeV2u19/wXixTCP+U6tlgN+evvhyT7piUmr0S0AufGphZtA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDpaWpDeJTVe0TqpRgKdN+WzEuCoAcz0rq5wPeJy+6Jzu3zmKOXlsDMTxzwdZCa3Mw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a14606b8-4fcf-4381-a4e2-d0842d2a0fb0",
+                            SecurityStamp = "32d08d0b-f8a4-45d1-9fd8-9c885e8b5a74",
                             TwoFactorEnabled = false,
                             UserName = "waiter"
                         },
@@ -122,13 +122,13 @@ namespace KitchenDisplaySystem.Migrations
                         {
                             Id = "5efd9e33-1d82-49ef-950d-6c34917f9a26",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cd4ba76d-f604-4cea-a929-27a0a0282e93",
+                            ConcurrencyStamp = "7d6c2337-62f3-471f-b192-73f3e9620f50",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJhE+ArRv7gcx0Vm5NOJGL/UKHcnOtp4QTmAeqkgNOYvOjbn83bYqCfcBN4D0svn6A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEIE9bbtR+RE7X6nvA0qCpxYaGjyfBdb/LOqahoq75VnZSbn4MxIUTa5FgY6IYZlHw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5cd1d6dd-ea35-41f9-9dba-c11a9c75bb63",
+                            SecurityStamp = "c69a62ea-469d-4547-80f7-4c2609decc4e",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -438,6 +438,9 @@ namespace KitchenDisplaySystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -469,6 +472,7 @@ namespace KitchenDisplaySystem.Migrations
                         new
                         {
                             Id = 1,
+                            Active = true,
                             DisplayName = "Marko M.",
                             Name = "Marko",
                             Phone = "0618521114",
@@ -477,6 +481,7 @@ namespace KitchenDisplaySystem.Migrations
                         new
                         {
                             Id = 2,
+                            Active = true,
                             DisplayName = "Marko J.",
                             Name = "Marko",
                             Phone = "0612336852",
@@ -485,6 +490,7 @@ namespace KitchenDisplaySystem.Migrations
                         new
                         {
                             Id = 3,
+                            Active = true,
                             DisplayName = "Jovana",
                             Name = "Jovana",
                             Phone = "0632448752",
@@ -493,6 +499,7 @@ namespace KitchenDisplaySystem.Migrations
                         new
                         {
                             Id = 4,
+                            Active = true,
                             DisplayName = "Petar",
                             Name = "Petar",
                             Phone = "0603352291",

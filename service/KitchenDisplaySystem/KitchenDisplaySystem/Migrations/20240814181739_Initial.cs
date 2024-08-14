@@ -87,7 +87,8 @@ namespace KitchenDisplaySystem.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Phone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -290,9 +291,9 @@ namespace KitchenDisplaySystem.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "10335569-4b56-45f7-b029-c705d304bf52", 0, "e25c7f3a-8d5e-422c-924f-1ee45038c854", null, false, false, null, null, "KITCHEN", "AQAAAAIAAYagAAAAEA2ch+ZzCzM23pxRqwygjQ/B401fFIPtqqvu20ak7bZGGIKWcWMsiN02GIf6Lre4BQ==", null, false, "a37760e8-5558-44b2-b88c-9b65294f9bf4", false, "kitchen" },
-                    { "5efd9e33-1d82-49ef-950d-6c34917f9a26", 0, "cd4ba76d-f604-4cea-a929-27a0a0282e93", null, false, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEJhE+ArRv7gcx0Vm5NOJGL/UKHcnOtp4QTmAeqkgNOYvOjbn83bYqCfcBN4D0svn6A==", null, false, "5cd1d6dd-ea35-41f9-9dba-c11a9c75bb63", false, "admin" },
-                    { "7df3d20c-7e1b-4581-8546-f03510dda802", 0, "79c2379b-1480-4f0b-ba1a-509dbe8dbaa6", null, false, false, null, null, "WAITER", "AQAAAAIAAYagAAAAEBYtsxCcZR4eJEF16rOgeV2u19/wXixTCP+U6tlgN+evvhyT7piUmr0S0AufGphZtA==", null, false, "a14606b8-4fcf-4381-a4e2-d0842d2a0fb0", false, "waiter" }
+                    { "10335569-4b56-45f7-b029-c705d304bf52", 0, "0a2f485d-41be-4558-88fe-d4b7493b8fee", null, false, false, null, null, "KITCHEN", "AQAAAAIAAYagAAAAEHTpiGS34eoe0z7BlFNPoc36qwgyVfu7Len+4cGwMeyOeO20UlXAJwQf72QSoc8lQA==", null, false, "764f0190-87be-4731-b38c-92b53ee2272f", false, "kitchen" },
+                    { "5efd9e33-1d82-49ef-950d-6c34917f9a26", 0, "7d6c2337-62f3-471f-b192-73f3e9620f50", null, false, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEEIE9bbtR+RE7X6nvA0qCpxYaGjyfBdb/LOqahoq75VnZSbn4MxIUTa5FgY6IYZlHw==", null, false, "c69a62ea-469d-4547-80f7-4c2609decc4e", false, "admin" },
+                    { "7df3d20c-7e1b-4581-8546-f03510dda802", 0, "5ce3e42d-98dd-415c-9a4d-9034d694f0d3", null, false, false, null, null, "WAITER", "AQAAAAIAAYagAAAAEDpaWpDeJTVe0TqpRgKdN+WzEuCoAcz0rq5wPeJy+6Jzu3zmKOXlsDMTxzwdZCa3Mw==", null, false, "32d08d0b-f8a4-45d1-9fd8-9c885e8b5a74", false, "waiter" }
                 });
 
             migrationBuilder.InsertData(
@@ -320,13 +321,13 @@ namespace KitchenDisplaySystem.Migrations
 
             migrationBuilder.InsertData(
                 table: "Waiters",
-                columns: new[] { "Id", "DisplayName", "Name", "Phone", "Surname" },
+                columns: new[] { "Id", "Active", "DisplayName", "Name", "Phone", "Surname" },
                 values: new object[,]
                 {
-                    { 1, "Marko M.", "Marko", "0618521114", "Marković" },
-                    { 2, "Marko J.", "Marko", "0612336852", "Jovanović" },
-                    { 3, "Jovana", "Jovana", "0632448752", "Jovanović" },
-                    { 4, "Petar", "Petar", "0603352291", "Petrović" }
+                    { 1, true, "Marko M.", "Marko", "0618521114", "Marković" },
+                    { 2, true, "Marko J.", "Marko", "0612336852", "Jovanović" },
+                    { 3, true, "Jovana", "Jovana", "0632448752", "Jovanović" },
+                    { 4, true, "Petar", "Petar", "0603352291", "Petrović" }
                 });
 
             migrationBuilder.InsertData(
