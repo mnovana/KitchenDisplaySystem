@@ -3,7 +3,9 @@
     public class StatsDTO
     {
         public int AveragePrepareTimeMinutes { get; set; }
-        public IEnumerable<OrdersByMonthDTO> MonthlyNumberOfOrders { get; set; }
-        public IEnumerable<OrdersByWaiterDTO> NumberOfOrdersByWaiters { get; set; }
+        public int OrdersToday { get; set; }
+        public int OrdersBreakfast { get; set; }
+        public int OrdersLunch { get; set; }
+        public int OrdersDinner { get; set; }
     }
 }

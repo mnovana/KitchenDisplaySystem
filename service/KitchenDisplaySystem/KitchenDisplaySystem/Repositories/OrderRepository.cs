@@ -51,7 +51,7 @@ namespace KitchenDisplaySystem.Repositories
                 .Where(o => !o.Served).ToListAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetAllAsync()
+        public async Task<IEnumerable<Order>> GetAllAsync(DateTime date)
         {
             return await _context.Orders
                 .Include(o => o.OrderItems)
@@ -78,7 +78,7 @@ namespace KitchenDisplaySystem.Repositories
             return rowsAffected > 0;
         }
 
-        public async Task<StatsDTO> GetStatisticsAsync()
+        public StatsDTO GetStatistics()
         {
             var averagePrepareTimeMinutes = _context.Orders
                 .Where(o => o.End != null)
@@ -86,8 +86,39 @@ namespace KitchenDisplaySystem.Repositories
                 .Select(o => (o.End.Value - o.Start).TotalMinutes)
                 .Average();
 
+            var ordersToday = _context.Orders
+                .Where(o => o.Start.Date == DateTime.Today.Date)
+                .Count();
+
+            var ordersBreakfast = _context.Orders
+                .Where(o => o.Start.Date == DateTime.Today.Date)
+                .Where(o => o.Start.Hour <= 12)
+                .Count();
+
+            var ordersLunch = _context.Orders
+                .Where(o => o.Start.Date == DateTime.Today.Date)
+                .Where(o => o.Start.Hour > 12 && o.Start.Hour <= 17)
+                .Count();
+
+            var ordersDinner = _context.Orders
+                .Where(o => o.Start.Date == DateTime.Today.Date)
+                .Where(o => o.Start.Hour > 17)
+                .Count();
+
+            return new StatsDTO()
+            {
+                AveragePrepareTimeMinutes = (int)Math.Round(averagePrepareTimeMinutes),
+                OrdersToday = ordersToday,
+                OrdersBreakfast = ordersBreakfast,
+                OrdersLunch = ordersLunch,
+                OrdersDinner = ordersDinner
+            };
+        }
+
+        public async Task<IEnumerable<OrdersByMonthDTO>> GetOrdersByMonthAsync(int year)
+        {
             var monthlyNumberOfOrders = await _context.Orders
-                .Where(o => o.Start.Year == DateTime.Today.Year)
+                .Where(o => o.Start.Year == year)
                 .GroupBy(o => o.Start.Month)
                 .Select(group => new OrdersByMonthDTO()
                 {
@@ -96,8 +127,14 @@ namespace KitchenDisplaySystem.Repositories
                 })
                 .OrderBy(o => o.Month).ToListAsync();
 
+            return monthlyNumberOfOrders;
+        }
+
+        public async Task<IEnumerable<OrdersByWaiterDTO>> GetOrdersByWaiterAsync()
+        {
             var numberOfOrdersByWaiters = await _context.Orders
                 .Include(o => o.Waiter)
+                .Where(o => o.Waiter.Active)
                 .GroupBy(o => o.Waiter)
                 .Select(group => new OrdersByWaiterDTO()
                 {
@@ -106,12 +143,7 @@ namespace KitchenDisplaySystem.Repositories
                 })
                 .OrderByDescending(o => o.NumberOfOrders).ToListAsync();
 
-            return new StatsDTO()
-            {
-                AveragePrepareTimeMinutes = (int)Math.Round(averagePrepareTimeMinutes),
-                MonthlyNumberOfOrders = monthlyNumberOfOrders,
-                NumberOfOrdersByWaiters = numberOfOrdersByWaiters
-            };
+            return numberOfOrdersByWaiters;
         }
     }
 }

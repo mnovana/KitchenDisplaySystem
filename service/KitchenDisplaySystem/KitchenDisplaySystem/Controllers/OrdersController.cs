@@ -41,9 +41,9 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetOrders(DateTime date)
         {
-            var orders = await _orderRepository.GetAllAsync();
+            var orders = await _orderRepository.GetAllAsync(date);
             var ordersDTO = orders.AsQueryable().ProjectTo<OrderDTO>(_mapper.ConfigurationProvider).ToList();
 
             return Ok(ordersDTO);
@@ -54,11 +54,36 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> GetOrdersStatistics()
+        public IActionResult GetOrdersStatistics()
         {
-            var stats = await _orderRepository.GetStatisticsAsync();
+            var stats = _orderRepository.GetStatistics();
 
             return Ok(stats);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("monthly")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetOrdersByMonth(int year)
+        {
+            var stats = await _orderRepository.GetOrdersByMonthAsync(year);
+
+            return Ok(stats);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("waiters")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetOrdersByWaiter()
+        {
+            var stats = await _orderRepository.GetOrdersByWaiterAsync();
+
+            return Ok(stats);
+        }
+
     }
 }
