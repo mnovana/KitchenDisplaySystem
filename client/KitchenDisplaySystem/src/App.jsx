@@ -3,8 +3,10 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import OrdersPage from "./pages/OrdersPage";
 import LoginPage from "./pages/LoginPage";
 import PanelPage from "./pages/PanelPage";
+import SettingsPage from "./pages/SettingsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminHeader from "./layouts/AdminHeader";
 
 function App() {
   const router = createBrowserRouter(
@@ -17,7 +19,10 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
         </Route>
         <Route element={<ProtectedRoute usernames={["admin"]} />}>
-          <Route path="/admin" element={<PanelPage />} />
+          <Route element={<AdminHeader />}>
+            <Route path="/admin" element={<PanelPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
