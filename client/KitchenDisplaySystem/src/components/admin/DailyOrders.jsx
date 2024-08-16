@@ -6,7 +6,11 @@ import { FaSearch } from "react-icons/fa";
 function DailyOrders() {
   const user = useContext(UserContext);
   const [orders, setOrders] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+
+  const [date, setDate] = useState(() => {
+    const today = new Date();
+    return new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  });
 
   function fetchOrdersByDate(date) {
     const serverUrl = import.meta.env.VITE_SERVER_URL;
