@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ConnectionContext, UserContext } from "../App";
+import { ConnectionContext, UserContext } from "../pages/OrdersPage";
 
 function OrderButton({ isPrepared, preparedButtonHandler, orderId }) {
   const user = useContext(UserContext);

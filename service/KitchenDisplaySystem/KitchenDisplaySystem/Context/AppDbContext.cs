@@ -73,10 +73,10 @@ namespace KitchenDisplaySystem.Context
             );
 
             modelBuilder.Entity<Waiter>().HasData(
-                new Waiter { Id = 1, Name = "Marko", Surname = "Marković", DisplayName = "Marko M.", Phone = "0618521114" },
-                new Waiter { Id = 2, Name = "Marko", Surname = "Jovanović", DisplayName = "Marko J.", Phone = "0612336852" },
-                new Waiter { Id = 3, Name = "Jovana", Surname = "Jovanović", DisplayName = "Jovana", Phone = "0632448752" },
-                new Waiter { Id = 4, Name = "Petar", Surname = "Petrović", DisplayName = "Petar", Phone = "0603352291" }
+                new Waiter { Id = 1, Name = "Marko", Surname = "Marković", DisplayName = "Marko M.", Phone = "0618521114", Active = true },
+                new Waiter { Id = 2, Name = "Marko", Surname = "Jovanović", DisplayName = "Marko J.", Phone = "0612336852", Active = true },
+                new Waiter { Id = 3, Name = "Jovana", Surname = "Jovanović", DisplayName = "Jovana", Phone = "0632448752", Active = true },
+                new Waiter { Id = 4, Name = "Petar", Surname = "Petrović", DisplayName = "Petar", Phone = "0603352291", Active = true }
             );
 
             modelBuilder.Entity<Order>().HasData(
@@ -107,18 +107,27 @@ namespace KitchenDisplaySystem.Context
                 NormalizedUserName = "WAITER",
             };
 
+            AppUser adminUser = new AppUser()
+            {
+                Id = "5efd9e33-1d82-49ef-950d-6c34917f9a26",
+                UserName = "admin",
+                NormalizedUserName = "ADMIN"
+            };
+
             PasswordHasher<AppUser> passwordHasher = new PasswordHasher<AppUser>();
             kitchenUser.PasswordHash = passwordHasher.HashPassword(kitchenUser, "Kuhinja-0");
             waiterUser.PasswordHash = passwordHasher.HashPassword(waiterUser, "Konobar-0");
+            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Administrator-0");
 
-            modelBuilder.Entity<AppUser>().HasData(kitchenUser, waiterUser);
+            modelBuilder.Entity<AppUser>().HasData(kitchenUser, waiterUser, adminUser);
         }
 
         private void SeedRoles(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "a4cb9cf6-e1fe-4913-969d-f622cbd2bd84", Name = "Kitchen", NormalizedName = "KITCHEN", ConcurrencyStamp = "1" },
-                new IdentityRole { Id = "061d252f-f801-443d-9506-900d13f090fd", Name = "Waiter", NormalizedName = "WAITER", ConcurrencyStamp = "2"}
+                new IdentityRole { Id = "061d252f-f801-443d-9506-900d13f090fd", Name = "Waiter", NormalizedName = "WAITER", ConcurrencyStamp = "2"},
+                new IdentityRole { Id = "2b1ad17d-c6f5-4de9-b637-c91488504334", Name = "Admin", NormalizedName = "ADMIN", ConcurrencyStamp = "3" }
             );
         }
 
@@ -126,7 +135,8 @@ namespace KitchenDisplaySystem.Context
         {
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string> { UserId = "10335569-4b56-45f7-b029-c705d304bf52", RoleId = "a4cb9cf6-e1fe-4913-969d-f622cbd2bd84" },
-                new IdentityUserRole<string> { UserId = "7df3d20c-7e1b-4581-8546-f03510dda802", RoleId = "061d252f-f801-443d-9506-900d13f090fd" }
+                new IdentityUserRole<string> { UserId = "7df3d20c-7e1b-4581-8546-f03510dda802", RoleId = "061d252f-f801-443d-9506-900d13f090fd" },
+                new IdentityUserRole<string> { UserId = "5efd9e33-1d82-49ef-950d-6c34917f9a26", RoleId = "2b1ad17d-c6f5-4de9-b637-c91488504334" }
             );
         }
     }

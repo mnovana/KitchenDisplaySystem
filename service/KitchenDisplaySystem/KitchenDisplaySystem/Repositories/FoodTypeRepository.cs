@@ -18,5 +18,11 @@ namespace KitchenDisplaySystem.Repositories
         {
             return await _context.FoodTypes.ToListAsync();
         }
+
+        public async Task<FoodType?> GetByIdAsync(int id)
+        {
+            return await _context.FoodTypes
+                .FirstOrDefaultAsync(ft => ft.Id == id);
+        }
     }
 }

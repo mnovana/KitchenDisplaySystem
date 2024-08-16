@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import Menu from "./Menu";
-import { ConnectionContext, SetShowModalContext } from "../App";
+import { ConnectionContext, SetShowModalContext } from "../pages/OrdersPage";
 
 export const AddedItemsContext = React.createContext();
 

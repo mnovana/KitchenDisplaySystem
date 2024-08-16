@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KitchenDisplaySystem.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Route("[controller]")]
     [ApiController]
     public class FoodController : ControllerBase
@@ -26,6 +26,7 @@ namespace KitchenDisplaySystem.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetFood()
         {
             var foods = await _foodRepository.GetAllAsync();
@@ -36,6 +37,7 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetFoodById(int id)
         {
             var food = await _foodRepository.GetByIdAsync(id);

@@ -1,12 +1,17 @@
 import waiterImg from "../assets/waiter.svg";
 import chefImg from "../assets/chef.svg";
+import adminImg from "../assets/admin.png";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function LoginForm({ setUser }) {
+function LoginForm() {
   const [waiter, setWaiter] = useState(false);
-  const [chef, setChef] = useState(false);
+  const [kitchen, setKitchen] = useState(false);
+  const [admin, setAdmin] = useState(false);
   const [password, setPassword] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
+
+  const navigate = useNavigate();
 
   function submitForm(e) {
     e.preventDefault();
@@ -15,7 +20,16 @@ function LoginForm({ setUser }) {
       return;
     }
 
-    const user = { username: waiter ? "waiter" : "kitchen", password: password };
+    let username;
+    if (waiter) {
+      username = "waiter";
+    } else if (kitchen) {
+      username = "kitchen";
+    } else if (admin) {
+      username = "admin";
+    }
+
+    const user = { username: username, password: password };
     console.log(user);
     const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -24,8 +38,12 @@ function LoginForm({ setUser }) {
         if (response.status == 200) {
           response.json().then((data) => {
             sessionStorage.setItem("user", JSON.stringify(data));
-            setUser(data);
             console.log("Successful login. Token = " + data.token + " User = " + data.username);
+            if (data.username == "admin") {
+              return navigate("/admin");
+            } else {
+              return navigate("/");
+            }
           });
         } else {
           setValidationMessage("Neuspešna prijava.");
@@ -37,7 +55,7 @@ function LoginForm({ setUser }) {
   function validateForm() {
     setValidationMessage("");
 
-    if (!waiter && !chef) {
+    if (!waiter && !kitchen && !admin) {
       setValidationMessage("Izaberite korisnika.");
       return false;
     } else if (!password) {
@@ -52,28 +70,51 @@ function LoginForm({ setUser }) {
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center gap-8">
-      <div className="flex flex-row items-center h-auto  w-1/2 gap-5">
+    <div
+      className="h-screen w-screen flex flex-col justify-center items-center gap-8"
+      onClick={() => {
+        setWaiter(false);
+        setKitchen(false);
+        setAdmin(false);
+      }}
+    >
+      <div className="flex items-center h-auto  w-1/2 gap-5">
         <div
           className={`${waiter ? "bg-gray-200" : "bg-neutral-600"} rounded h-full w-full hover:bg-gray-200 transition-colors`}
-          onClick={() => {
+          onClick={(event) => {
+            event.stopPropagation();
             setWaiter(true);
-            setChef(false);
+            setKitchen(false);
+            setAdmin(false);
             setValidationMessage("");
           }}
         >
           <img src={waiterImg} />
         </div>
         <div
-          className={`${chef ? "bg-gray-200" : "bg-neutral-600"} rounded h-full w-full hover:bg-gray-200 transition-colors`}
-          onClick={() => {
-            setChef(true);
+          className={`${kitchen ? "bg-gray-200" : "bg-neutral-600"} rounded h-full w-full hover:bg-gray-200 transition-colors`}
+          onClick={(event) => {
+            event.stopPropagation();
+            setKitchen(true);
             setWaiter(false);
+            setAdmin(false);
             setValidationMessage("");
           }}
         >
           <img src={chefImg} />
         </div>
+      </div>
+      <div
+        className={`${admin ? "bg-gray-200" : "bg-neutral-600"} rounded w-1/2 h-16 hover:bg-gray-200 transition-colors overflow-hidden`}
+        onClick={(event) => {
+          event.stopPropagation();
+          setAdmin(true);
+          setKitchen(false);
+          setWaiter(false);
+          setValidationMessage("");
+        }}
+      >
+        <img src={adminImg} className="h-16 ml-[15%] mt-2" />
       </div>
       <form onSubmit={submitForm} className="text-center">
         <input
@@ -84,12 +125,13 @@ function LoginForm({ setUser }) {
             setPassword(e.target.value);
             setValidationMessage("");
           }}
+          onClick={(e) => e.stopPropagation()}
         />
         <br />
         <br />
         {validationMessage && <span className="text-red-600">{validationMessage}</span>}
         <br />
-        <input type="submit" value="Prijava" className="bg-neutral-600 text-white p-2 m-3 rounded hover:bg-black transition-colors" />
+        <input type="submit" value="Prijava" className="bg-neutral-600 text-white p-2 m-3 rounded hover:bg-black transition-colors" onClick={(event) => event.stopPropagation()} />
       </form>
     </div>
   );

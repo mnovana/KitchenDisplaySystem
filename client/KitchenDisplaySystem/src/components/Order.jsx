@@ -3,7 +3,7 @@ import OrderHeader from "./OrderHeader";
 import OrderItem from "./OrderItem";
 import Note from "./Note";
 import { useContext, useEffect, useState } from "react";
-import { ConnectionContext, UserContext } from "../App";
+import { ConnectionContext, UserContext } from "../pages/OrdersPage";
 import bell_four from "../assets/bell_four.mp3";
 
 function Order({ order }) {

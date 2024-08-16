@@ -1,11 +1,13 @@
 import logoutImg from "../assets/logout.png";
 import addImg from "../assets/add.png";
-import { SetShowModalContext, UserContext } from "../App";
+import { SetShowModalContext, UserContext } from "../pages/OrdersPage";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Sidebar({ setUser }) {
+function Sidebar() {
   const setShowModal = useContext(SetShowModalContext);
   const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   return (
     <div className={`h-screen w-20 flex flex-col p-1 ${user.username == "waiter" ? "justify-between" : "justify-end"}`}>
@@ -16,7 +18,7 @@ function Sidebar({ setUser }) {
         className="invert opacity-50 hover:opacity-100"
         onClick={() => {
           sessionStorage.removeItem("user");
-          setUser(null);
+          return navigate("/login");
         }}
       />
     </div>
