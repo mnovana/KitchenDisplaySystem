@@ -3,10 +3,15 @@ import Card from "../components/admin/Card";
 import AverageTimeCard from "../components/admin/AverageTimeCard";
 import MonthlyOrders from "../components/admin/MonthlyOrders";
 import DailyOrders from "../components/admin/DailyOrders";
+import React from "react";
+
+export const UserContext = React.createContext();
 
 function PanelPage() {
+  const user = JSON.parse(sessionStorage.getItem("user")) || null;
+
   return (
-    <>
+    <UserContext.Provider value={user}>
       <div className="flex flex-col items-center gap-10 bg-neutral-300">
         {/* cards */}
         <div className="text-center flex flex-wrap justify-center gap-10 my-3">
@@ -36,7 +41,7 @@ function PanelPage() {
         {/* line chart */}
         <MonthlyOrders />
       </div>
-    </>
+    </UserContext.Provider>
   );
 }
 

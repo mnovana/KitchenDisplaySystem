@@ -15,7 +15,9 @@ function MonthlyOrders() {
       </div>
       <select>
         {years.map((year) => (
-          <option value={year}>{year}</option>
+          <option key={year} value={year}>
+            {year}
+          </option>
         ))}
       </select>
       <div className="flex-1 w-5/6 h-60 mb-10">
