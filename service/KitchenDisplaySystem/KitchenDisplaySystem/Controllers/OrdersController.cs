@@ -41,8 +41,19 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetOrders(DateTime date)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if(date.Year < 2023 || date.Date > DateTime.Today.Date)
+            {
+                return BadRequest();
+            }
+
             var orders = await _orderRepository.GetAllAsync(date);
             var ordersDTO = orders.AsQueryable().ProjectTo<OrderDTO>(_mapper.ConfigurationProvider).ToList();
 
@@ -66,8 +77,14 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetOrdersByMonth(int year)
         {
+            if(year < 2023 || year > DateTime.Today.Year)
+            {
+                return BadRequest();
+            }
+            
             var stats = await _orderRepository.GetOrdersByMonthAsync(year);
 
             return Ok(stats);

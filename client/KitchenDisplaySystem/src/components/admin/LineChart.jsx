@@ -1,16 +1,15 @@
 import { useRef } from "react";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
-import { scales, Ticks } from "chart.js/auto";
 
-function LineChart() {
+function LineChart({ monthlyOrders }) {
   const ref = useRef();
 
   const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul"],
+    labels: monthlyOrders.map((m) => m.month),
     datasets: [
       {
-        data: [509, 590, 584, 621, 655, 702, 694],
+        data: monthlyOrders.map((m) => m.numberOfOrders),
         fill: false,
         borderColor: "rgb(75, 192, 192)",
         tension: 0.1,

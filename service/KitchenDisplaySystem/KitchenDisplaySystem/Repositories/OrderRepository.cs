@@ -3,6 +3,7 @@ using KitchenDisplaySystem.DTO.StatsDTOs;
 using KitchenDisplaySystem.Models;
 using KitchenDisplaySystem.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace KitchenDisplaySystem.Repositories
 {
@@ -54,10 +55,12 @@ namespace KitchenDisplaySystem.Repositories
         public async Task<IEnumerable<Order>> GetAllAsync(DateTime date)
         {
             return await _context.Orders
+                .Where(o => o.Start.Date == date.Date)
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
                 .Include(o => o.Waiter)
-                .Include(o => o.Table).ToListAsync();
+                .Include(o => o.Table)
+                .OrderByDescending(o => o.Start).ToListAsync();
         }
 
         public async Task UpdateEndTimeAsync(int id, DateTime end)
@@ -122,10 +125,10 @@ namespace KitchenDisplaySystem.Repositories
                 .GroupBy(o => o.Start.Month)
                 .Select(group => new OrdersByMonthDTO()
                 {
-                    Month = group.Key,
+                    Month = new DateTime(1, group.Key, 1).ToString("MMM", new CultureInfo("sr-Latn-RS")),  // get month string
                     NumberOfOrders = group.Count()
                 })
-                .OrderBy(o => o.Month).ToListAsync();
+                .ToListAsync();
 
             return monthlyNumberOfOrders;
         }

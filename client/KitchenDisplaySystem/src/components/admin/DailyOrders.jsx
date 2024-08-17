@@ -12,18 +12,24 @@ function DailyOrders() {
     return new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   });
 
-  function fetchOrdersByDate(date) {
+  function fetchOrdersByDate(dateString) {
+    const date = new Date(dateString);
+    if (date.getFullYear < 2023 || date.getDate() > new Date().getDate()) {
+      console.alert("Invalid date");
+      return;
+    }
+
     const serverUrl = import.meta.env.VITE_SERVER_URL;
 
     const headers = {};
     headers.Authorization = "Bearer " + user.token;
 
-    fetch(`${serverUrl}/orders?date=${date}`, { headers: headers })
+    fetch(`${serverUrl}/orders?date=${dateString}`, { headers: headers })
       .then((response) => {
         if (response.status == 200) {
           response.json().then(setOrders);
         } else {
-          alert("Fetch failed");
+          alert("Daily orders fetch failed");
         }
       })
       .catch((error) => alert(error));
