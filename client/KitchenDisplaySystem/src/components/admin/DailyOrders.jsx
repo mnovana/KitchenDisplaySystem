@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import OrderRow from "./OrderRow";
 import { UserContext } from "../../pages/PanelPage";
 import { FaSearch } from "react-icons/fa";
+import PaginatedOrderRows from "./PaginatedOrderRows";
 
 function DailyOrders() {
   const user = useContext(UserContext);
@@ -40,7 +40,7 @@ function DailyOrders() {
   }, []);
 
   return (
-    <div className="bg-white w-4/5 shadow-md rounded">
+    <div className={`bg-white w-4/5 shadow-md rounded ${orders.length > 0 && "h-[750px]"}`}>
       <div className="pt-5 pb-9 text-center">
         <span className="text-4xl">Porudžbine</span>
         <form
@@ -62,7 +62,7 @@ function DailyOrders() {
         </form>
       </div>
 
-      {orders.length > 0 ? orders.map((order) => <OrderRow key={order.id} order={order} />) : <div className="text-center m-10">Ne postoje podaci za uneti datum.</div>}
+      {orders.length > 0 ? <PaginatedOrderRows orders={orders} /> : <div className="text-center m-10">Ne postoje podaci za uneti datum.</div>}
     </div>
   );
 }

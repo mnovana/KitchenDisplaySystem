@@ -60,7 +60,7 @@ namespace KitchenDisplaySystem.Repositories
                 .ThenInclude(oi => oi.Food)
                 .Include(o => o.Waiter)
                 .Include(o => o.Table)
-                .OrderByDescending(o => o.Start).ToListAsync();
+                .ToListAsync();
         }
 
         public async Task UpdateEndTimeAsync(int id, DateTime end)
