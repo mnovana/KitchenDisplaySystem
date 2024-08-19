@@ -11,7 +11,8 @@ namespace KitchenDisplaySystem.Repositories.Interfaces
         Task UpdateEndTimeAsync(int id, DateTime end);
         Task<bool> UpdateServedAsync(int id);
         Task<IEnumerable<Order>> GetAllUnservedAsync();
-        StatsDTO GetStatistics();
+        OrdersTodayDTO GetOrdersToday();
+        int GetAveragePrepareTime();
         Task<IEnumerable<OrdersByMonthDTO>> GetOrdersByMonthAsync(int year);
         Task<IEnumerable<OrdersByWaiterDTO>> GetOrdersByWaiterAsync();
     }

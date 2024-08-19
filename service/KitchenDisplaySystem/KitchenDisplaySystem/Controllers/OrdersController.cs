@@ -61,13 +61,25 @@ namespace KitchenDisplaySystem.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("statistics")]
+        [HttpGet("today")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult GetOrdersStatistics()
+        public IActionResult GetNumberOfOrdersToday()
         {
-            var stats = _orderRepository.GetStatistics();
+            var stats = _orderRepository.GetOrdersToday();
+
+            return Ok(stats);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("time")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public IActionResult GetAveragePrepareTime()
+        {
+            var stats = _orderRepository.GetAveragePrepareTime();
 
             return Ok(stats);
         }

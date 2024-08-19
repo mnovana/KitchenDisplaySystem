@@ -81,18 +81,8 @@ namespace KitchenDisplaySystem.Repositories
             return rowsAffected > 0;
         }
 
-        public StatsDTO GetStatistics()
+        public OrdersTodayDTO GetOrdersToday()
         {
-            var averagePrepareTimeMinutes = _context.Orders
-                .Where(o => o.End != null)
-                .AsEnumerable()
-                .Select(o => (o.End.Value - o.Start).TotalMinutes)
-                .Average();
-
-            var ordersToday = _context.Orders
-                .Where(o => o.Start.Date == DateTime.Today.Date)
-                .Count();
-
             var ordersBreakfast = _context.Orders
                 .Where(o => o.Start.Date == DateTime.Today.Date)
                 .Where(o => o.Start.Hour <= 12)
@@ -108,14 +98,23 @@ namespace KitchenDisplaySystem.Repositories
                 .Where(o => o.Start.Hour > 17)
                 .Count();
 
-            return new StatsDTO()
+            return new OrdersTodayDTO()
             {
-                AveragePrepareTimeMinutes = (int)Math.Round(averagePrepareTimeMinutes),
-                OrdersToday = ordersToday,
                 OrdersBreakfast = ordersBreakfast,
                 OrdersLunch = ordersLunch,
                 OrdersDinner = ordersDinner
             };
+        }
+
+        public int GetAveragePrepareTime()
+        {
+            var averagePrepareTimeMinutes = _context.Orders
+                .Where(o => o.End != null)
+                .AsEnumerable()
+                .Select(o => (o.End.Value - o.Start).TotalMinutes)
+                .Average();
+
+            return (int)Math.Round(averagePrepareTimeMinutes);
         }
 
         public async Task<IEnumerable<OrdersByMonthDTO>> GetOrdersByMonthAsync(int year)

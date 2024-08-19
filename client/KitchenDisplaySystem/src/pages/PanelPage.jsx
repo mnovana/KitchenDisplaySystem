@@ -1,6 +1,6 @@
-import PieChart from "../components/admin/PieChart";
-import Card from "../components/admin/Card";
+import Cards from "../components/admin/Cards";
 import AverageTimeCard from "../components/admin/AverageTimeCard";
+import OrdersByWaiter from "../components/admin/OrdersByWaiter";
 import MonthlyOrders from "../components/admin/MonthlyOrders";
 import DailyOrders from "../components/admin/DailyOrders";
 import React from "react";
@@ -15,10 +15,7 @@ function PanelPage() {
       <div className="flex flex-col items-center gap-10 bg-neutral-300">
         {/* cards */}
         <div className="text-center flex flex-wrap justify-center gap-10 my-3">
-          <Card headerColor="bg-lime-600" title="Broj porudžbina danas" number="129" />
-          <Card headerColor="bg-yellow-400" title="Broj porudžbina do 12h" number="22" />
-          <Card headerColor="bg-sky-700" title="Broj porudžbina 12h-17h" number="47" />
-          <Card headerColor="bg-red-600" title="Broj porudžbina posle 17h" number="60" />
+          <Cards />
         </div>
 
         {/* orders */}
@@ -27,14 +24,13 @@ function PanelPage() {
         {/* time and pie chart */}
         <div className="flex flex-wrap gap-5 w-4/5 justify-center items-center">
           {/* time */}
-          <AverageTimeCard time={19} />
+          <div className="w-52 min-h-48 self-stretch bg-blue-500 shadow-md rounded text-white flex flex-col justify-around items-center">
+            <AverageTimeCard />
+          </div>
 
           {/* pie chart */}
           <div className="flex-1 flex flex-col justify-center items-center bg-white shadow-md rounded">
-            <div className="text-2xl pt-5 pb-9 text-center">Broj porudžbina prema konobarima</div>
-            <div>
-              <PieChart />
-            </div>
+            <OrdersByWaiter />
           </div>
         </div>
 
