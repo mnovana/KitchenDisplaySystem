@@ -20,7 +20,7 @@ function AverageTimeCard() {
           alert("Average prepare time fetch failed");
         }
       })
-      .catch((error) => alert(error));
+      .catch((error) => console.log("Average time card: " + error));
   }, []);
 
   return (

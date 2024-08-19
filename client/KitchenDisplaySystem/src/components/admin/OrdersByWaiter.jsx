@@ -20,13 +20,13 @@ function OrdersByWaiter() {
           alert("Orders by waiter fetch failed");
         }
       })
-      .catch((error) => alert(error));
+      .catch((error) => console.log("Orders by waiter: " + error));
   }, []);
 
   return (
     <>
       <div className="text-2xl pt-5 pb-9 text-center">Broj porudžbina prema konobarima</div>
-      <div>{ordersByWaiter.length > 0 && <PieChart ordersByWaiter={ordersByWaiter} />}</div>
+      <div>{ordersByWaiter.length > 0 ? <PieChart ordersByWaiter={ordersByWaiter} /> : <div className="text-center my-20">Ne postoje podaci za kreiranje grafikona.</div>}</div>
     </>
   );
 }

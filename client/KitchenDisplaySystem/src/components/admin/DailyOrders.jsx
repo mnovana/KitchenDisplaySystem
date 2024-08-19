@@ -32,7 +32,7 @@ function DailyOrders() {
           alert("Daily orders fetch failed");
         }
       })
-      .catch((error) => alert(error));
+      .catch((error) => console.log("Daily orders: " + error));
   }
 
   useEffect(() => {

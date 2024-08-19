@@ -33,7 +33,7 @@ function MonthlyOrders() {
           alert("Monthly orders fetch failed");
         }
       })
-      .catch((error) => alert(error));
+      .catch((error) => console.log("Monthly orders: " + error));
   }
 
   useEffect(() => {

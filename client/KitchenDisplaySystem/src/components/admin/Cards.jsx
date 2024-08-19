@@ -18,9 +18,13 @@ function Cards() {
           response.json().then(setNumOfOrders);
         } else {
           alert("Number of orders fetch failed");
+          setNumOfOrders({ ordersBreakfast: 0, ordersLunch: 0, ordersDinner: 0 });
         }
       })
-      .catch((error) => alert(error));
+      .catch((error) => {
+        console.log("Number of orders: " + error);
+        setNumOfOrders({ ordersBreakfast: 0, ordersLunch: 0, ordersDinner: 0 });
+      });
   }, []);
 
   return (
