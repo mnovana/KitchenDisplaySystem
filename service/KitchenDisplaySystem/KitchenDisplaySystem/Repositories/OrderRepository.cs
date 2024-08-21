@@ -60,6 +60,7 @@ namespace KitchenDisplaySystem.Repositories
                 .ThenInclude(oi => oi.Food)
                 .Include(o => o.Waiter)
                 .Include(o => o.Table)
+                .OrderByDescending(o => o.Start)
                 .ToListAsync();
         }
 
@@ -85,17 +86,17 @@ namespace KitchenDisplaySystem.Repositories
         {
             var ordersBreakfast = _context.Orders
                 .Where(o => o.Start.Date == DateTime.Today.Date)
-                .Where(o => o.Start.Hour <= 12)
+                .Where(o => o.Start.Hour < 12)
                 .Count();
 
             var ordersLunch = _context.Orders
                 .Where(o => o.Start.Date == DateTime.Today.Date)
-                .Where(o => o.Start.Hour > 12 && o.Start.Hour <= 17)
+                .Where(o => o.Start.TimeOfDay >= new TimeSpan(12,0,0) && o.Start.TimeOfDay <= new TimeSpan(17,0,0))
                 .Count();
 
             var ordersDinner = _context.Orders
                 .Where(o => o.Start.Date == DateTime.Today.Date)
-                .Where(o => o.Start.Hour > 17)
+                .Where(o => o.Start.TimeOfDay > new TimeSpan(17, 0, 0))
                 .Count();
 
             return new OrdersTodayDTO()
