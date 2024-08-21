@@ -32,7 +32,7 @@ function Cards() {
       <Card
         headerColor="bg-lime-600"
         title="Broj porudžbina danas"
-        number={numOfOrders.ordersBreakfast && numOfOrders.ordersBreakfast + numOfOrders.ordersLunch + numOfOrders.ordersDinner}
+        number={numOfOrders.ordersBreakfast != null && numOfOrders.ordersBreakfast + numOfOrders.ordersLunch + numOfOrders.ordersDinner}
       />
       <Card headerColor="bg-yellow-400" title="Broj porudžbina do 12h" number={numOfOrders.ordersBreakfast} />
       <Card headerColor="bg-sky-700" title="Broj porudžbina 12h-17h" number={numOfOrders.ordersLunch} />
