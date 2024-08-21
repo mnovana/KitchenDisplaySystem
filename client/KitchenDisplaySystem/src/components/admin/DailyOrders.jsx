@@ -40,7 +40,7 @@ function DailyOrders() {
   }, []);
 
   return (
-    <div className={`bg-white w-4/5 shadow-md rounded ${orders.length > 0 && "h-[750px]"}`}>
+    <div className={`bg-white w-4/5 shadow-md rounded ${orders.length > 0 && "min-h-[750px]"}`}>
       <div className="pt-5 pb-9 text-center">
         <span className="text-4xl">Porudžbine</span>
         <form
