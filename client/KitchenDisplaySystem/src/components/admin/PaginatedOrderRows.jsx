@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OrderRow from "./OrderRow";
 
 function PaginatedOrderRows({ orders }) {
   const [currentPage, setCurrentPage] = useState(1);
+
+  // set current page back to 1 whenever new orders are fetched
+  useEffect(() => setCurrentPage(1), [orders]);
 
   const ordersPerPage = 10;
   const numberOfPages = Math.ceil(orders.length / ordersPerPage);
