@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KitchenDisplaySystem.DTO;
+using KitchenDisplaySystem.Models;
 using KitchenDisplaySystem.Repositories;
 using KitchenDisplaySystem.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -34,10 +35,75 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> GetTableById(int id)
+        public async Task<IActionResult> GetTable(int id)
         {
             var table = await _tableRepository.GetByIdAsync(id);
             return table != null ? Ok(table) : NotFound();
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> PostTable(Table table)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            await _tableRepository.AddAsync(table);
+
+            return CreatedAtAction(nameof(GetTable), new { id = table.Id }, table);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> PutTable(int id, Table table)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (id != table.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _tableRepository.UpdateAsync(table);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return Ok(table);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> DeleteTable(int id)
+        {
+            var table = await _tableRepository.GetByIdAsync(id);
+
+            if (table == null)
+            {
+                return BadRequest();
+            }
+
+            await _tableRepository.DeleteAsync(table);
+
+            return NoContent();
         }
     }
 }

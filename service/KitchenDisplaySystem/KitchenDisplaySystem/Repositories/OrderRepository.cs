@@ -29,7 +29,29 @@ namespace KitchenDisplaySystem.Repositories
                 return null;
             }
 
+            // not returning "order" since it doesn't have any referenced properties set
             return await GetByIdAsync(order.Id);
+        }
+
+        public async Task UpdateAsync(Order order)
+        {
+            _context.Entry(order).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)    // if someone updated the order after we fetched it
+            {
+                throw;
+            }
+
+        }
+
+        public async Task DeleteAsync(Order order)
+        {
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Order?> GetByIdAsync(int id)
@@ -64,11 +86,13 @@ namespace KitchenDisplaySystem.Repositories
                 .ToListAsync();
         }
 
-        public async Task UpdateEndTimeAsync(int id, DateTime end)
+        public async Task<bool> UpdateEndTimeAsync(int id, DateTime end)
         {
-            await _context.Orders
+            int rowsAffected = await _context.Orders
                 .Where(o => o.Id == id)
                 .ExecuteUpdateAsync(x => x.SetProperty(o => o.End, end));
+
+            return rowsAffected > 0;
         }
 
         public async Task<bool> UpdateServedAsync(int id)
@@ -82,22 +106,22 @@ namespace KitchenDisplaySystem.Repositories
             return rowsAffected > 0;
         }
 
-        public OrdersTodayDTO GetOrdersToday()
+        public async Task<OrdersTodayDTO> GetOrdersToday()
         {
-            var ordersBreakfast = _context.Orders
+            var ordersBreakfast = await _context.Orders
                 .Where(o => o.Start.Date == DateTime.Today.Date)
                 .Where(o => o.Start.Hour < 12)
-                .Count();
+                .CountAsync();
 
-            var ordersLunch = _context.Orders
+            var ordersLunch = await _context.Orders
                 .Where(o => o.Start.Date == DateTime.Today.Date)
                 .Where(o => o.Start.TimeOfDay >= new TimeSpan(12,0,0) && o.Start.TimeOfDay <= new TimeSpan(17,0,0))
-                .Count();
+                .CountAsync();
 
-            var ordersDinner = _context.Orders
+            var ordersDinner = await _context.Orders
                 .Where(o => o.Start.Date == DateTime.Today.Date)
                 .Where(o => o.Start.TimeOfDay > new TimeSpan(17, 0, 0))
-                .Count();
+                .CountAsync();
 
             return new OrdersTodayDTO()
             {
@@ -107,13 +131,12 @@ namespace KitchenDisplaySystem.Repositories
             };
         }
 
-        public int GetAveragePrepareTime()
+        public async Task<int> GetAveragePrepareTime()
         {
-            var averagePrepareTimeMinutes = _context.Orders
+            var averagePrepareTimeMinutes = await _context.Orders
                 .Where(o => o.End != null)
-                .AsEnumerable()
                 .Select(o => (o.End.Value - o.Start).TotalMinutes)
-                .Average();
+                .AverageAsync();
 
             return (int)Math.Round(averagePrepareTimeMinutes);
         }

@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using KitchenDisplaySystem.DTO;
 using KitchenDisplaySystem.Models;
+using KitchenDisplaySystem.Repositories;
 using KitchenDisplaySystem.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,6 +43,71 @@ namespace KitchenDisplaySystem.Controllers
         {
             var food = await _foodRepository.GetByIdAsync(id);
             return food != null ? Ok(_mapper.Map<FoodDTO>(food)) : NotFound();
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> PostFood(Food food)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            await _foodRepository.AddAsync(food);
+
+            return CreatedAtAction(nameof(GetFoodById), new { id = food.Id }, _mapper.Map<FoodDTO>(food));
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> PutFood(int id, Food food)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (id != food.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _foodRepository.UpdateAsync(food);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return Ok(_mapper.Map<FoodDTO>(food));
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> DeleteFood(int id)
+        {
+            var food = await _foodRepository.GetByIdAsync(id);
+
+            if (food == null)
+            {
+                return BadRequest();
+            }
+
+            await _foodRepository.DeleteAsync(food);
+
+            return NoContent();
         }
     }
 }

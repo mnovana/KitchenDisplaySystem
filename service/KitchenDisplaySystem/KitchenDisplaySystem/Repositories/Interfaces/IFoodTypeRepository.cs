@@ -6,5 +6,8 @@ namespace KitchenDisplaySystem.Repositories.Interfaces
     {
         Task<IEnumerable<FoodType>> GetAllAsync();
         Task<FoodType?> GetByIdAsync(int id);
+        Task AddAsync(FoodType foodType);
+        Task UpdateAsync(FoodType foodType);
+        Task DeleteAsync(FoodType foodType);
     }
 }

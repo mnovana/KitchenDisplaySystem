@@ -24,5 +24,32 @@ namespace KitchenDisplaySystem.Repositories
             return await _context.Tables
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
+
+        public async Task AddAsync(Table table)
+        {
+            await _context.Tables.AddAsync(table);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Table table)
+        {
+            _context.Entry(table).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)    // if someone updated the table after we fetched it
+            {
+                throw;
+            }
+
+        }
+
+        public async Task DeleteAsync(Table table)
+        {
+            _context.Tables.Remove(table);
+            await _context.SaveChangesAsync();
+        }
     }
 }

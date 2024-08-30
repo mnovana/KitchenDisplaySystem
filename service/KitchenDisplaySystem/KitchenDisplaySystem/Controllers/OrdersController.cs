@@ -37,6 +37,24 @@ namespace KitchenDisplaySystem.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetOrder(int id)
+        {
+            var order = await _orderRepository.GetByIdAsync(id);
+
+            if (order == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_mapper.Map<OrderDTO>(order));
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -44,12 +62,12 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetOrders(DateTime date)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            if(date.Year < 2023 || date.Date > DateTime.Today.Date)
+            if (date.Year < 2023 || date.Date > DateTime.Today.Date)
             {
                 return BadRequest();
             }
@@ -61,13 +79,81 @@ namespace KitchenDisplaySystem.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> PostOrder(Order order)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            await _orderRepository.AddAsync(order);
+
+            return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, _mapper.Map<OrderDTO>(order));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> PutOrder(int id, Order order)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (id != order.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _orderRepository.UpdateAsync(order);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return Ok(_mapper.Map<OrderDTO>(order));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            var order = await _orderRepository.GetByIdAsync(id);
+
+            if (order == null)
+            {
+                return BadRequest();
+            }
+
+            await _orderRepository.DeleteAsync(order);
+            
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("today")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult GetNumberOfOrdersToday()
+        public async Task<IActionResult> GetNumberOfOrdersToday()
         {
-            var stats = _orderRepository.GetOrdersToday();
+            var stats = await _orderRepository.GetOrdersToday();
 
             return Ok(stats);
         }
@@ -77,9 +163,9 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult GetAveragePrepareTime()
+        public async Task<IActionResult> GetAveragePrepareTime()
         {
-            var stats = _orderRepository.GetAveragePrepareTime();
+            var stats = await _orderRepository.GetAveragePrepareTime();
 
             return Ok(stats);
         }

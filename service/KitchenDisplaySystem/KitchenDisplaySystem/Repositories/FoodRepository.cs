@@ -27,5 +27,32 @@ namespace KitchenDisplaySystem.Repositories
                 .Include(f => f.FoodType)
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
+
+        public async Task AddAsync(Food food)
+        {
+            await _context.Food.AddAsync(food);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Food food)
+        {
+            _context.Entry(food).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)    // if someone updated the food after we fetched it
+            {
+                throw;
+            }
+
+        }
+
+        public async Task DeleteAsync(Food food)
+        {
+            _context.Food.Remove(food);
+            await _context.SaveChangesAsync();
+        }
     }
 }
