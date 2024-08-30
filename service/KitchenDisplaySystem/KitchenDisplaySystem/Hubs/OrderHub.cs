@@ -70,7 +70,12 @@ namespace KitchenDisplaySystem.Hubs
                 return;
             }
 
-            await _orderRepository.UpdateEndTimeAsync(id, end);
+            bool updateSuccess = await _orderRepository.UpdateEndTimeAsync(id, end);
+            if (!updateSuccess)
+            {
+                await Clients.Caller.SendAsync("ReceiveError", "Bad request");
+                return;
+            }
 
             await Clients.All.SendAsync("ReadyOrder", id, end);
         }
