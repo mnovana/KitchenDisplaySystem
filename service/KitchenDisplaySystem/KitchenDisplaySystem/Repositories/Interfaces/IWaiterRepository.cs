@@ -8,6 +8,6 @@ namespace KitchenDisplaySystem.Repositories.Interfaces
         Task<Waiter?> GetByIdAsync(int id);
         Task AddAsync(Waiter waiter);
         Task UpdateAsync(Waiter waiter);
-        Task DeleteAsync(Waiter waiter);
+        Task<bool> DeleteAsync(int id);
     }
 }

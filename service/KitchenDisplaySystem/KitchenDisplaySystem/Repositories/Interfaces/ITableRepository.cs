@@ -8,6 +8,6 @@ namespace KitchenDisplaySystem.Repositories.Interfaces
         Task<Table?> GetByIdAsync(int id);
         Task AddAsync(Table table);
         Task UpdateAsync(Table table);
-        Task DeleteAsync(Table table);
+        Task<bool> DeleteAsync(int id);
     }
 }

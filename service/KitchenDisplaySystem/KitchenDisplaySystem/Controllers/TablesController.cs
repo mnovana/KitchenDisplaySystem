@@ -94,14 +94,10 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteTable(int id)
         {
-            var table = await _tableRepository.GetByIdAsync(id);
-
-            if (table == null)
+            if (!await _tableRepository.DeleteAsync(id))
             {
                 return BadRequest();
             }
-
-            await _tableRepository.DeleteAsync(table);
 
             return NoContent();
         }

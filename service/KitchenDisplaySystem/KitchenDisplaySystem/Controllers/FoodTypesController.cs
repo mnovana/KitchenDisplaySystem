@@ -93,14 +93,10 @@ namespace KitchenDisplaySystem.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteFoodType(int id)
         {
-            var foodType = await _foodTypeRepository.GetByIdAsync(id);
-
-            if (foodType == null)
+            if (!await _foodTypeRepository.DeleteAsync(id))
             {
                 return BadRequest();
             }
-
-            await _foodTypeRepository.DeleteAsync(foodType);
 
             return NoContent();
         }

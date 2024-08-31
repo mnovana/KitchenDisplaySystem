@@ -16,12 +16,15 @@ namespace KitchenDisplaySystem.Repositories
 
         public async Task<IEnumerable<FoodType>> GetAllAsync()
         {
-            return await _context.FoodTypes.ToListAsync();
+            return await _context.FoodTypes
+                .Where(f => !f.Deleted)
+                .ToListAsync();
         }
 
         public async Task<FoodType?> GetByIdAsync(int id)
         {
             return await _context.FoodTypes
+                .Where(f => !f.Deleted)
                 .FirstOrDefaultAsync(ft => ft.Id == id);
         }
 
@@ -46,10 +49,13 @@ namespace KitchenDisplaySystem.Repositories
 
         }
 
-        public async Task DeleteAsync(FoodType foodType)
+        public async Task<bool> DeleteAsync(int id)
         {
-            _context.FoodTypes.Remove(foodType);
-            await _context.SaveChangesAsync();
+            int rowsAffected = await _context.FoodTypes
+                .Where(f => f.Id == id)
+                .ExecuteUpdateAsync(x => x.SetProperty(f => f.Deleted, true));
+
+            return rowsAffected == 1;
         }
     }
 }

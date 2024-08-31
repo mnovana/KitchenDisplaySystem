@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Eventing.Reader;
 
 namespace KitchenDisplaySystem.Models
 {
@@ -21,5 +20,7 @@ namespace KitchenDisplaySystem.Models
         public string Phone { get; set; }
         [Required]
         public bool Active { get; set; }
+        [Required]
+        public bool Deleted { get; set; }
     }
 }
