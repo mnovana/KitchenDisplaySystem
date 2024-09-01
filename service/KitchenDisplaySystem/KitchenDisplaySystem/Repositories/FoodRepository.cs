@@ -33,7 +33,15 @@ namespace KitchenDisplaySystem.Repositories
         public async Task AddAsync(Food food)
         {
             await _context.Food.AddAsync(food);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateException)    // if foreign key doesn't exist etc.
+            {
+                throw;
+            }
         }
 
         public async Task UpdateAsync(Food food)
@@ -44,7 +52,7 @@ namespace KitchenDisplaySystem.Repositories
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)    // if someone updated the food after we fetched it
+            catch (DbUpdateException)
             {
                 throw;
             }

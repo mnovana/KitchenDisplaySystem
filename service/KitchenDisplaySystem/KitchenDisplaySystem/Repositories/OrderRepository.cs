@@ -16,21 +16,20 @@ namespace KitchenDisplaySystem.Repositories
             _context = context;
         }
         
-        public async Task<Order?> AddAsync(Order order)
+        public async Task AddAsync(Order order)
         {
             // EF will also insert every OrderItem
             await _context.Orders.AddAsync(order);
 
-            // SaveChangesAsync() will assign an ID to the new order object
-            await _context.SaveChangesAsync();
-
-            if (order.Id == 0)
+            try
             {
-                return null;
+                // SaveChangesAsync() will assign an ID to "order"
+                await _context.SaveChangesAsync();
             }
-
-            // not returning "order" since it doesn't have any referenced properties set
-            return await GetByIdAsync(order.Id);
+            catch (DbUpdateException)    // if foreign key doesn't exist etc.
+            {
+                throw;
+            }
         }
 
         public async Task UpdateAsync(Order order)
@@ -41,7 +40,7 @@ namespace KitchenDisplaySystem.Repositories
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)    // if someone updated the order after we fetched it
+            catch (DbUpdateException)
             {
                 throw;
             }

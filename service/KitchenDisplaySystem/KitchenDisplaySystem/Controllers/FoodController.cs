@@ -57,7 +57,14 @@ namespace KitchenDisplaySystem.Controllers
                 return BadRequest();
             }
 
-            await _foodRepository.AddAsync(food);
+            try
+            {
+                await _foodRepository.AddAsync(food);
+            }
+            catch
+            {
+                return BadRequest();
+            }
 
             // the "food" object doesn't inculde any referenced properties
             var newFood = await _foodRepository.GetByIdAsync(food.Id);

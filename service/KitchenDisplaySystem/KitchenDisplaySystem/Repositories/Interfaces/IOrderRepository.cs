@@ -7,7 +7,7 @@ namespace KitchenDisplaySystem.Repositories.Interfaces
     {
         Task<IEnumerable<Order>> GetAllAsync(DateTime date);
         Task<Order?> GetByIdAsync(int id);
-        Task<Order?> AddAsync(Order order);
+        Task AddAsync(Order order);
         Task UpdateAsync(Order order);
         Task DeleteAsync(Order order);
         Task<bool> UpdateEndTimeAsync(int id, DateTime end);

@@ -91,7 +91,14 @@ namespace KitchenDisplaySystem.Controllers
                 return BadRequest();
             }
 
-            await _orderRepository.AddAsync(order);
+            try
+            {
+                await _orderRepository.AddAsync(order);
+            }
+            catch
+            {
+                return BadRequest();
+            }
 
             // the "order" object doesn't inculde any referenced properties
             var newOrder = await _orderRepository.GetByIdAsync(order.Id);
