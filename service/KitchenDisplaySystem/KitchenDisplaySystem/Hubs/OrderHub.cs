@@ -33,16 +33,18 @@ namespace KitchenDisplaySystem.Hubs
 
             order.Start = order.Start.ToLocalTime();
 
-            var savedOrder = await _orderRepository.AddAsync(order);
+            try
+            {
+                await _orderRepository.AddAsync(order);
+            }
+            catch
+            {
+                await Clients.Caller.SendAsync("ReceiveError", "Bad request");
+            }
 
-            if (savedOrder != null)
-            {
-                await Clients.All.SendAsync("AddOrder", _mapper.Map<OrderDTO>(order));
-            }
-            else
-            {
-                await Clients.Caller.SendAsync("ReceiveError", "Failed to add the new order");
-            }
+            // the "order" object doesn't inculde any referenced properties
+            var newOrder = await _orderRepository.GetByIdAsync(order.Id);
+            await Clients.All.SendAsync("AddOrder", _mapper.Map<OrderDTO>(newOrder));
         }
 
         [Authorize(Roles = "Kitchen")]

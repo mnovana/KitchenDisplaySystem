@@ -93,7 +93,9 @@ namespace KitchenDisplaySystem.Controllers
 
             await _orderRepository.AddAsync(order);
 
-            return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, _mapper.Map<OrderDTO>(order));
+            // the "order" object doesn't inculde any referenced properties
+            var newOrder = await _orderRepository.GetByIdAsync(order.Id);
+            return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, _mapper.Map<OrderDTO>(newOrder));
         }
 
         [Authorize(Roles = "Admin")]
@@ -123,7 +125,9 @@ namespace KitchenDisplaySystem.Controllers
                 return BadRequest();
             }
 
-            return Ok(_mapper.Map<OrderDTO>(order));
+            // the "order" object doesn't inculde any referenced properties
+            var updatedOrder = await _orderRepository.GetByIdAsync(order.Id);
+            return Ok(_mapper.Map<OrderDTO>(updatedOrder));
         }
 
         [Authorize(Roles = "Admin")]

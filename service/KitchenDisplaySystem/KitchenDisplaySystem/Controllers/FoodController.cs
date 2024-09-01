@@ -59,7 +59,9 @@ namespace KitchenDisplaySystem.Controllers
 
             await _foodRepository.AddAsync(food);
 
-            return CreatedAtAction(nameof(GetFoodById), new { id = food.Id }, _mapper.Map<FoodDTO>(food));
+            // the "food" object doesn't inculde any referenced properties
+            var newFood = await _foodRepository.GetByIdAsync(food.Id);
+            return CreatedAtAction(nameof(GetFoodById), new { id = food.Id }, _mapper.Map<FoodDTO>(newFood));
         }
 
         [HttpPut("{id}")]
@@ -87,8 +89,9 @@ namespace KitchenDisplaySystem.Controllers
             {
                 return BadRequest();
             }
-
-            return Ok(_mapper.Map<FoodDTO>(food));
+            // the "food" object doesn't inculde any referenced properties
+            var updatedFood = await _foodRepository.GetByIdAsync(food.Id);
+            return Ok(_mapper.Map<FoodDTO>(updatedFood));
         }
 
         [HttpDelete("{id}")]
