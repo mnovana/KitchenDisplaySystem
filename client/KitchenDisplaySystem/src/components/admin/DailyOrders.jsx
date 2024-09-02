@@ -14,8 +14,8 @@ function DailyOrders() {
 
   function fetchOrdersByDate(dateString) {
     const date = new Date(dateString);
-    if (date.getFullYear < 2023 || date.getDate() > new Date().getDate()) {
-      console.alert("Invalid date");
+    if (date.getFullYear < 2023 || date > new Date()) {
+      alert("Invalid date: " + dateString);
       return;
     }
 
