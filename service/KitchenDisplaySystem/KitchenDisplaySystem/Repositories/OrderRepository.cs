@@ -133,8 +133,8 @@ namespace KitchenDisplaySystem.Repositories
         public async Task<int> GetAveragePrepareTime()
         {
             var averagePrepareTimeMinutes = await _context.Orders
-                .Where(o => o.End != null)
-                .Select(o => (o.End.Value - o.Start).TotalMinutes)
+                .Where(o => o.End.HasValue)
+                .Select(o => EF.Functions.DateDiffMinute(o.Start, o.End.Value))
                 .AverageAsync();
 
             return (int)Math.Round(averagePrepareTimeMinutes);
