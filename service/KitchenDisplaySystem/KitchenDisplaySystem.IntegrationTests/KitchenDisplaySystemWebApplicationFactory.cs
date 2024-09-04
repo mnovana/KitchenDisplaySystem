@@ -17,11 +17,13 @@ namespace KitchenDisplaySystem.IntegrationTests
 {
     public class KitchenDisplaySystemWebApplicationFactory : WebApplicationFactory<Program>
     {
+        private string connectionString;
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureTestServices(services =>
             {
-                // removing options for the database so we can set it to use the in-memory one
+                // removing options for the real database so we can set it to use a new one for testing
                 var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
 
                 services.Remove(dbContextDescriptor);
@@ -30,22 +32,38 @@ namespace KitchenDisplaySystem.IntegrationTests
 
                 services.Remove(dbConnectionDescriptor);
 
-                services.AddSingleton<DbConnection>(container =>
-                {
-                    var connection = new SqliteConnection("DataSource=:memory:");
-                    connection.Open();
+                connectionString = "Server=(localdb)\\mssqllocaldb;Database=KdsTestDb;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-                    return connection;
+                services.AddDbContext<AppDbContext>((options) =>
+                {
+                    options.UseSqlServer(connectionString);
                 });
 
-                services.AddDbContext<AppDbContext>((container, options) =>
-                {
-                    var connection = container.GetRequiredService<DbConnection>();
-                    options.UseSqlite(connection);
-                });
+                // Create and migrate the database
+                var serviceProvider = services.BuildServiceProvider();
 
-                builder.UseEnvironment("Development");
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    db.Database.EnsureCreated();
+                }
             });
+        }
+
+        public override async ValueTask DisposeAsync()
+        {
+            // if the database was created delete it
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                var options = new DbContextOptionsBuilder<AppDbContext>()
+                    .UseSqlServer(connectionString)
+                    .Options;
+
+                using var context = new AppDbContext(options);
+                await context.Database.EnsureDeletedAsync();
+            }
+
+            await base.DisposeAsync();
         }
     }
 }
