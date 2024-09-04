@@ -11,6 +11,10 @@ namespace KitchenDisplaySystem.IntegrationTests.Controllers
 {
     public class OrderDataControllerIntegrationTests : IntegrationTest
     {
+        public OrderDataControllerIntegrationTests(KitchenDisplaySystemWebApplicationFactory appFactory) : base(appFactory)
+        {
+        }
+
         [Fact]
         public async Task GetOrderData_AsKitchen_ReturnsForbidden()
         {

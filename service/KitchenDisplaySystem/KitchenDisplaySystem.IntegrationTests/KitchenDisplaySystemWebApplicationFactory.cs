@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace KitchenDisplaySystem.IntegrationTests
 {
-    internal class KitchenDisplaySystemWebApplicationFactory : WebApplicationFactory<Program>
+    public class KitchenDisplaySystemWebApplicationFactory : WebApplicationFactory<Program>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

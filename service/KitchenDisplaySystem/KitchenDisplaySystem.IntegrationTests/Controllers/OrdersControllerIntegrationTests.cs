@@ -12,6 +12,10 @@ namespace KitchenDisplaySystem.IntegrationTests.Controllers
 {
     public class OrdersControllerIntegrationTests : IntegrationTest
     {
+        public OrdersControllerIntegrationTests(KitchenDisplaySystemWebApplicationFactory appFactory) : base(appFactory)
+        {
+        }
+
         [Fact]
         public async Task GetUnservedOrders_AsWaiter_ReturnsCollection()
         {

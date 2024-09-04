@@ -17,16 +17,15 @@ using System.Threading.Tasks;
 
 namespace KitchenDisplaySystem.IntegrationTests
 {
-    public enum Role { Kitchen, Waiter }
+    public enum Role { Kitchen, Waiter, Admin }
 
-    public class IntegrationTest
+    public class IntegrationTest : IClassFixture<KitchenDisplaySystemWebApplicationFactory>
     {
         protected readonly HttpClient TestClient;
-        protected readonly IServiceScopeFactory scopeFactory; 
+        protected readonly IServiceScopeFactory scopeFactory;
 
-        protected IntegrationTest()
+        protected IntegrationTest(KitchenDisplaySystemWebApplicationFactory appFactory)
         {
-            var appFactory = new KitchenDisplaySystemWebApplicationFactory();
             TestClient = appFactory.CreateClient();
             scopeFactory = appFactory.Services.GetRequiredService<IServiceScopeFactory>();
         }
@@ -38,7 +37,9 @@ namespace KitchenDisplaySystem.IntegrationTests
 
         private async Task<string> GetJwtAsync(Role role)
         {
-            using(var scope = scopeFactory.CreateScope())
+            string username = Guid.NewGuid().ToString();    // new user created for each test method
+
+            using (var scope = scopeFactory.CreateScope())
             {
                 var scopedServices = scope.ServiceProvider;
 
@@ -49,7 +50,7 @@ namespace KitchenDisplaySystem.IntegrationTests
                 
                 // register new user
                 var userManager = scopedServices.GetRequiredService<UserManager<AppUser>>();
-                AppUser user = new AppUser { UserName = "TestUsername" };
+                AppUser user = new AppUser { UserName = username };
                 var createResult = await userManager.CreateAsync(user, "Password123!");
                 Assert.True(createResult.Succeeded);
 
@@ -61,7 +62,7 @@ namespace KitchenDisplaySystem.IntegrationTests
             // login
             var response = await TestClient.PostAsJsonAsync("https://localhost:7141/login", new LoginDTO
             {
-                Username = "TestUsername",
+                Username = username,
                 Password = "Password123!"
             });
 
