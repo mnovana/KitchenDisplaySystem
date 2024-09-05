@@ -19,10 +19,11 @@ namespace KitchenDisplaySystem.IntegrationTests
 {
     public enum Role { Kitchen, Waiter, Admin }
 
-    public class IntegrationTest : IClassFixture<KitchenDisplaySystemWebApplicationFactory>
+    public class IntegrationTest : IClassFixture<KitchenDisplaySystemWebApplicationFactory>, IAsyncLifetime
     {
         protected readonly HttpClient TestClient;
         protected readonly IServiceScopeFactory scopeFactory;
+        private AppDbContext context;
 
         protected IntegrationTest(KitchenDisplaySystemWebApplicationFactory appFactory)
         {
@@ -70,6 +71,27 @@ namespace KitchenDisplaySystem.IntegrationTests
             var responseBody = await response.Content.ReadFromJsonAsync<TokenDTO>();
             
             return responseBody.Token;
+        }
+
+        public async Task InitializeAsync()
+        {
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseSqlServer(TestData.ConnectionString)
+                .Options;
+
+            context = new AppDbContext(options);
+
+            await context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureCreatedAsync();
+        }
+
+        public async Task DisposeAsync()
+        {
+            if (context != null)
+            {
+                await context.Database.EnsureDeletedAsync();
+                await context.DisposeAsync();
+            }
         }
     }
 }

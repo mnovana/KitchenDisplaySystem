@@ -17,8 +17,6 @@ namespace KitchenDisplaySystem.IntegrationTests
 {
     public class KitchenDisplaySystemWebApplicationFactory : WebApplicationFactory<Program>
     {
-        private string connectionString;
-
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureTestServices(services =>
@@ -32,38 +30,11 @@ namespace KitchenDisplaySystem.IntegrationTests
 
                 services.Remove(dbConnectionDescriptor);
 
-                connectionString = "Server=(localdb)\\mssqllocaldb;Database=KdsTestDb;Trusted_Connection=True;MultipleActiveResultSets=true";
-
                 services.AddDbContext<AppDbContext>((options) =>
                 {
-                    options.UseSqlServer(connectionString);
+                    options.UseSqlServer(TestData.ConnectionString);
                 });
-
-                // Create and migrate the database
-                var serviceProvider = services.BuildServiceProvider();
-
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                    db.Database.EnsureCreated();
-                }
             });
-        }
-
-        public override async ValueTask DisposeAsync()
-        {
-            // if the database was created delete it
-            if (!string.IsNullOrEmpty(connectionString))
-            {
-                var options = new DbContextOptionsBuilder<AppDbContext>()
-                    .UseSqlServer(connectionString)
-                    .Options;
-
-                using var context = new AppDbContext(options);
-                await context.Database.EnsureDeletedAsync();
-            }
-
-            await base.DisposeAsync();
         }
     }
 }
