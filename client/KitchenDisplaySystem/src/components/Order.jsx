@@ -5,6 +5,7 @@ import Note from "./Note";
 import { useContext, useEffect, useState } from "react";
 import { ConnectionContext, UserContext } from "../pages/OrdersPage";
 import bell_four from "../assets/bell_four.mp3";
+import { format } from "date-fns";
 
 function Order({ order }) {
   const [end, setEnd] = useState(order.end);
@@ -12,7 +13,7 @@ function Order({ order }) {
   const user = useContext(UserContext);
 
   function PreparedButtonHandler() {
-    const now = new Date();
+    const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SS");
     connection.invoke("OrderPrepared", order.id, now).catch((error) => console.log("Failed to invoke OrderPrepared hub method: " + error));
   }
 

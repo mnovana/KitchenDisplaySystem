@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import Menu from "./Menu";
 import { ConnectionContext, SetShowModalContext } from "../pages/OrdersPage";
+import { format } from "date-fns";
 
 export const AddedItemsContext = React.createContext();
 
@@ -24,7 +25,7 @@ function AddOrderForm({ orderData }) {
       return;
     }
 
-    const now = new Date();
+    const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SS");
 
     const newOrder = {
       tableId: Number(tableId),

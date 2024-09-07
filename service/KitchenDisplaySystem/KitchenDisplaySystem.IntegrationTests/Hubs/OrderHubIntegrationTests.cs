@@ -63,7 +63,7 @@ namespace KitchenDisplaySystem.IntegrationTests.Hubs
 
             // Assert
             Assert.Equal(expectedOrder.Id, orderFromServer.Id);
-            //Assert.Equal(expectedOrder.Start, orderFromServer.Start);
+            Assert.Equal(expectedOrder.Start, orderFromServer.Start);
             Assert.Equal(expectedOrder.End, orderFromServer.End);
             Assert.Equal(expectedOrder.Served, orderFromServer.Served);
             Assert.Equal(expectedOrder.Note, orderFromServer.Note);

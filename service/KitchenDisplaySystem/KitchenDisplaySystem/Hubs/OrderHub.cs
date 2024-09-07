@@ -31,8 +31,6 @@ namespace KitchenDisplaySystem.Hubs
                 return;
             }
 
-            order.Start = order.Start.ToLocalTime();
-
             try
             {
                 await _orderRepository.AddAsync(order);
@@ -50,8 +48,6 @@ namespace KitchenDisplaySystem.Hubs
         [Authorize(Roles = "Kitchen")]
         public async Task OrderPrepared(int id, DateTime end)
         {
-            end = end.ToLocalTime();
-
             if (end < new DateTime(2024, 1, 1) || end > DateTime.Now)
             {
                 await Clients.Caller.SendAsync("ReceiveError", "Invalid end date");
