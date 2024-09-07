@@ -22,11 +22,13 @@ namespace KitchenDisplaySystem.IntegrationTests
     public class IntegrationTest : IClassFixture<KitchenDisplaySystemWebApplicationFactory>, IAsyncLifetime
     {
         protected readonly HttpClient TestClient;
+        protected readonly KitchenDisplaySystemWebApplicationFactory appFactory;
         protected readonly IServiceScopeFactory scopeFactory;
         private AppDbContext context;
 
         protected IntegrationTest(KitchenDisplaySystemWebApplicationFactory appFactory)
         {
+            this.appFactory = appFactory;
             TestClient = appFactory.CreateClient();
             scopeFactory = appFactory.Services.GetRequiredService<IServiceScopeFactory>();
         }
